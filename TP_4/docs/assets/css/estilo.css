@@ -1,0 +1,250 @@
+/* =============================================================
+   Estilos del sitio del Proyecto Semestral — ML1 (23433), FIUNA
+   Sin dependencias externas: fuentes del sistema, sin CDN.
+   Colores por rol (variables): se cambian en un solo lugar.
+   ============================================================= */
+
+:root {
+  /* Tema oscuro fijo. Para cambiar un color, cambiarlo solo acá. */
+  color-scheme: dark;
+  --fondo: #121211;
+  --superficie: #1a1a19;
+  --superficie-2: #232321;
+  --borde: #34332f;
+  --texto: #f0efec;
+  --texto-2: #c3c2b7;
+  --texto-3: #9a998f;
+  --acento: #7fb0ec;          /* enlaces y detalles */
+  --acento-suave: #1c2a3b;
+  --texto-sobre-acento: #0b0b0b;
+  --serie-1: #3987e5;         /* color de datos (gráficos) */
+  --aviso: #f2c86b;
+  --aviso-fondo: #2e2615;
+  --aviso-borde: #6b5520;
+  --radio: 10px;
+  --ancho: 72rem;
+  --fuente: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 4.5rem; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  font-family: var(--fuente);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--texto);
+  background: var(--fondo);
+  -webkit-text-size-adjust: 100%;
+}
+
+a { color: var(--acento); text-underline-offset: 2px; }
+a:hover { text-decoration-thickness: 2px; }
+
+img { max-width: 100%; height: auto; display: block; }
+
+code, kbd {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  background: var(--superficie-2);
+  border: 1px solid var(--borde);
+  border-radius: 4px;
+  padding: 0.05em 0.35em;
+}
+
+.saltar {
+  position: absolute; left: -999px; top: 0;
+  background: var(--acento); color: var(--texto-sobre-acento); padding: .5rem 1rem; z-index: 100;
+}
+.saltar:focus { left: 1rem; }
+
+/* ---------- Barra de navegación ---------- */
+.barra {
+  position: sticky; top: 0; z-index: 50;
+  background: color-mix(in srgb, var(--fondo) 92%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--borde);
+}
+.barra__interior {
+  max-width: var(--ancho); margin: 0 auto;
+  display: flex; align-items: center; gap: 1rem;
+  padding: .55rem 1.25rem;
+}
+.barra__marca {
+  font-weight: 700; color: var(--texto); text-decoration: none;
+  white-space: nowrap; font-size: .95rem;
+}
+.barra__enlaces {
+  display: flex; gap: .25rem; margin: 0; padding: 0; list-style: none;
+  overflow-x: auto; scrollbar-width: none; flex: 1; min-width: 0;
+}
+.barra__enlaces::-webkit-scrollbar { display: none; }
+.barra__enlaces a {
+  display: block; padding: .35rem .7rem; border-radius: 999px;
+  color: var(--texto-2); text-decoration: none; white-space: nowrap; font-size: .92rem;
+}
+.barra__enlaces a:hover { background: var(--superficie-2); color: var(--texto); }
+.barra__enlaces a[aria-current="true"] { background: var(--acento-suave); color: var(--acento); font-weight: 600; }
+
+/* ---------- Estructura ---------- */
+main { max-width: var(--ancho); margin: 0 auto; padding: 0 1.25rem 4rem; }
+
+section { padding-top: 3.5rem; }
+section + section { border-top: 1px solid var(--borde); margin-top: 3rem; }
+
+h1, h2, h3, h4 { line-height: 1.25; margin: 0 0 .6em; }
+h2 { font-size: clamp(1.5rem, 2.6vw, 2rem); }
+h2 .num { color: var(--texto-3); font-weight: 500; margin-right: .35em; }
+h3 { font-size: 1.25rem; margin-top: 2rem; }
+h4 { font-size: 1.05rem; margin-top: 1.5rem; }
+
+p, ul, ol { margin: 0 0 1rem; }
+li { margin-bottom: .35rem; }
+
+.lead { font-size: 1.15rem; color: var(--texto-2); max-width: 60ch; }
+.texto { max-width: 70ch; }
+
+/* ---------- Portada ---------- */
+.portada { padding-top: 3rem; }
+.portada__etiqueta {
+  display: inline-block; font-size: .85rem; font-weight: 600; letter-spacing: .02em;
+  color: var(--acento); background: var(--acento-suave);
+  padding: .2rem .7rem; border-radius: 999px; margin-bottom: 1rem;
+}
+.portada h1 { font-size: clamp(1.8rem, 4.2vw, 2.9rem); max-width: 24ch; }
+.portada__datos {
+  display: grid; gap: .25rem 1.5rem; grid-template-columns: max-content 1fr;
+  margin: 1.5rem 0; font-size: .98rem;
+}
+.portada__datos dt { color: var(--texto-3); }
+.portada__datos dd { margin: 0; }
+@media (max-width: 560px) {
+  .portada__datos { grid-template-columns: 1fr; }
+  .portada__datos dd { margin-bottom: .5rem; }
+}
+
+.botones { display: flex; flex-wrap: wrap; gap: .6rem; margin: 1.25rem 0 2rem; }
+.boton {
+  display: inline-flex; align-items: center; gap: .45rem;
+  padding: .6rem 1.1rem; border-radius: 8px; font-weight: 600; font-size: .95rem;
+  text-decoration: none; border: 1px solid var(--borde);
+  color: var(--texto); background: var(--superficie);
+}
+.boton:hover { border-color: var(--acento); color: var(--acento); }
+.boton--principal { background: var(--acento); border-color: var(--acento); color: var(--texto-sobre-acento); }
+.boton--principal:hover { color: var(--texto-sobre-acento); filter: brightness(1.08); }
+.boton svg { width: 1.1em; height: 1.1em; }
+
+.equipo { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); }
+.tarjeta {
+  background: var(--superficie); border: 1px solid var(--borde);
+  border-radius: var(--radio); padding: 1rem 1.15rem;
+}
+.tarjeta h4 { margin: 0 0 .3rem; }
+.tarjeta p { margin: 0; font-size: .93rem; color: var(--texto-2); overflow-wrap: anywhere; }
+
+/* ---------- Bloques ---------- */
+.rejilla-2 { display: grid; gap: 1.25rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 700px) { .rejilla-2 { grid-template-columns: 1fr; } }
+.rejilla-3 { display: grid; gap: 1rem; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 860px) { .rejilla-3 { grid-template-columns: 1fr; } }
+
+.caja {
+  background: var(--superficie); border: 1px solid var(--borde);
+  border-radius: var(--radio); padding: 1.1rem 1.25rem;
+}
+.caja h4 { margin-top: 0; }
+.caja > :last-child { margin-bottom: 0; }
+
+.nota {
+  border-left: 3px solid var(--acento); background: var(--acento-suave);
+  padding: .8rem 1rem; border-radius: 0 var(--radio) var(--radio) 0; margin: 1rem 0;
+  max-width: 70ch;
+}
+.nota > :last-child { margin-bottom: 0; }
+
+.formula {
+  font-family: "Cambria Math", "STIX Two Math", "Latin Modern Math", Georgia, serif;
+  font-size: 1.1rem; text-align: center; padding: .6rem; overflow-x: auto;
+}
+.formula var { font-style: italic; }
+
+/* ---------- Tablas ---------- */
+.tabla-scroll { overflow-x: auto; margin: 1rem 0 1.5rem; border: 1px solid var(--borde); border-radius: var(--radio); }
+table { border-collapse: collapse; width: 100%; font-size: .93rem; background: var(--superficie); }
+caption { text-align: left; padding: .7rem 1rem; font-weight: 600; color: var(--texto-2); caption-side: top; }
+th, td { padding: .55rem .9rem; border-top: 1px solid var(--borde); text-align: left; vertical-align: top; }
+thead th { background: var(--superficie-2); font-weight: 600; white-space: nowrap; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* ---------- Figuras ---------- */
+figure { margin: 1.5rem 0; }
+figure img { border: 1px solid var(--borde); border-radius: var(--radio); background: #fff; }
+figcaption { font-size: .92rem; color: var(--texto-2); margin-top: .6rem; max-width: 70ch; }
+figcaption strong { color: var(--texto); }
+
+/* Figura que todavía no existe en assets/img: la marca main.js */
+.fig-pendiente {
+  border: 2px dashed var(--aviso-borde); background: var(--aviso-fondo); color: var(--aviso);
+  border-radius: var(--radio); padding: 1.5rem 1rem; text-align: center; font-size: .92rem;
+  min-height: 8rem; display: flex; flex-direction: column; justify-content: center; gap: .3rem;
+}
+.fig-pendiente code { background: transparent; border-color: var(--aviso-borde); color: inherit; }
+
+.analisis { margin-top: .75rem; font-size: .95rem; max-width: 70ch; }
+.analisis dt { font-weight: 600; }
+.analisis dd { margin: 0 0 .5rem; color: var(--texto-2); }
+
+/* ---------- Diagrama de flujo (solo CSS) ---------- */
+.flujo { display: flex; flex-wrap: wrap; align-items: stretch; gap: .5rem; margin: 1.25rem 0; list-style: none; padding: 0; }
+.flujo li {
+  flex: 1 1 10rem; margin: 0; position: relative;
+  background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio);
+  padding: .8rem .9rem; font-size: .92rem;
+}
+.flujo li strong { display: block; font-size: .98rem; margin-bottom: .2rem; }
+.flujo li span { color: var(--texto-2); }
+.flujo .herr { display: inline-block; font-size: .75rem; font-weight: 600; color: var(--acento); background: var(--acento-suave); border-radius: 999px; padding: 0 .55rem; margin-bottom: .35rem; }
+
+/* ---------- Gráfico de barras (SVG generado por main.js) ---------- */
+.grafico { background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--radio); padding: 1rem 1rem .5rem; position: relative; }
+.grafico svg { display: block; max-width: 100%; overflow: visible; }
+.grafico .barra-dato { fill: var(--serie-1); }
+.grafico .barra-dato:hover, .grafico .barra-dato.activa { opacity: .8; }
+.grafico .rotulo { fill: var(--texto-2); font-size: 13px; font-family: var(--fuente); }
+.grafico .valor { fill: var(--texto); font-size: 13px; font-family: var(--fuente); font-variant-numeric: tabular-nums; }
+.grafico .eje { stroke: var(--borde); stroke-width: 1; }
+.grafico .zona { fill: transparent; cursor: default; }
+.tooltip {
+  position: absolute; pointer-events: none; z-index: 5;
+  background: var(--texto); color: var(--fondo); font-size: .85rem; line-height: 1.4;
+  padding: .45rem .65rem; border-radius: 6px; white-space: nowrap; transform: translate(-50%, -110%);
+  opacity: 0; transition: opacity .12s;
+}
+.tooltip.visible { opacity: 1; }
+
+/* ---------- Etiquetas de estado ---------- */
+.estado { display: inline-block; font-size: .78rem; font-weight: 600; padding: .05rem .55rem; border-radius: 999px; vertical-align: middle; margin-left: .4rem; }
+.estado--pendiente { background: var(--aviso-fondo); color: var(--aviso); border: 1px solid var(--aviso-borde); }
+
+/* ---------- Referencias y pie ---------- */
+.referencias { font-size: .93rem; padding-left: 1.4rem; }
+.referencias li { margin-bottom: .6rem; overflow-wrap: anywhere; }
+
+footer {
+  border-top: 1px solid var(--borde); margin-top: 4rem; padding: 2rem 1.25rem;
+  color: var(--texto-3); font-size: .9rem; text-align: center;
+}
+footer p { margin: .2rem 0; }
+
+/* ---------- Impresión ---------- */
+@media print {
+  .barra, .botones, .saltar { display: none; }
+  section { break-inside: avoid-page; }
+  a { color: inherit; }
+}
+.estado--neutro { background: var(--superficie-2); color: var(--texto-2); border: 1px solid var(--borde); }

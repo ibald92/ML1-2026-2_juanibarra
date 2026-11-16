@@ -1,0 +1,35 @@
+# Publica TP_4/docs en GitHub Pages (Settings → Pages → Source: GitHub Actions).
+# Solo lee el repo y escribe en Pages: permisos mínimos y ningún secreto.
+name: Publicar sitio TP4
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "TP_4/docs/**"
+      - ".github/workflows/pages-tp4.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: TP_4/docs
+      - id: despliegue
+        uses: actions/deploy-pages@v4

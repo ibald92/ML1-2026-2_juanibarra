@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#121211">
+  <!-- EDITAR: título del proyecto (igual que el <h1> de la portada) -->
+  <title>Diagnóstico de fallas en máquinas rotativas con vibración y acústica · ML1 FIUNA 2026</title>
+  <meta name="description" content="Proyecto Semestral de Machine Learning 1 (FIUNA, 2026): detección y clasificación de fallas en una máquina rotativa a partir de vibraciones y acústica, con Random Forest y Gradient Boosting.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%231d5fae'/%3E%3Cpath d='M4 16h4l3-7 4 14 4-11 3 4h6' fill='none' stroke='white' stroke-width='2.2' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/css/estilo.css">
+  <script src="assets/js/main.js" defer></script>
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<header class="barra">
+  <nav class="barra__interior" aria-label="Secciones">
+    <a class="barra__marca" href="#inicio">ML1 · Proyecto</a>
+    <ul class="barra__enlaces">
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#problema">Problema</a></li>
+      <li><a href="#datos">Datos y EDA</a></li>
+      <li><a href="#metodologia">Metodología</a></li>
+      <!-- Examen final: quitar "hidden" de estas dos líneas y de las secciones 5 y 6 -->
+      <li hidden><a href="#resultados">Resultados</a></li>
+      <li hidden><a href="#conclusiones">Conclusiones</a></li>
+      <li><a href="#referencias">Referencias</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="contenido">
+
+<!-- =========================================================
+     1. PORTADA E IDENTIFICACIÓN ACADÉMICA
+     ========================================================= -->
+<section id="inicio" class="portada" aria-labelledby="titulo-proyecto">
+  <span class="portada__etiqueta">Proyecto Semestral · Machine Learning 1</span>
+  <!-- EDITAR: título formal del proyecto -->
+  <h1 id="titulo-proyecto">Diagnóstico de fallas en máquinas rotativas a partir de vibración y acústica con aprendizaje automático</h1>
+  <p class="lead">Detección y clasificación de fallas de rodamientos, desalineación y desbalance en un banco de ensayo bajo carga variable, con Random Forest y Gradient Boosting. Además se identifica qué características y sensores determinan cada falla y cómo se relacionan con la temperatura, la corriente y la carga.</p>
+
+  <dl class="portada__datos">
+    <dt>Institución</dt><dd>Facultad de Ingeniería, Universidad Nacional de Asunción (FIUNA)</dd>
+    <dt>Carrera</dt><dd>Ingeniería Electrónica</dd>
+    <dt>Materia</dt><dd>Machine Learning 1 (23433) · Semestre 2026</dd>
+    <dt>Tipo de tarea</dt><dd>Clasificación supervisada multiclase (5 clases), con una vista binaria de detección (normal frente a falla)</dd>
+  </dl>
+
+  <div class="botones">
+    <!-- EDITAR: URL del repositorio del proyecto -->
+    <a class="boton boton--principal" href="https://github.com/ibald92/ML1-2026-2_juanibarra/tree/main/TP_4">
+      <svg viewBox="0 0 16 16" aria-hidden="true" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      Repositorio en GitHub
+    </a>
+    <a class="boton" href="https://doi.org/10.17632/ztmf3m7h5x.5">Dataset (Mendeley Data)</a>
+    <a class="boton" href="https://doi.org/10.1016/j.dib.2023.109049">Artículo del dataset</a>
+  </div>
+
+  <h3>Integrantes</h3>
+  <!-- EDITAR: una tarjeta por integrante (copiar el bloque <article> completo para agregar más) -->
+  <div class="equipo">
+    <article class="tarjeta">
+      <h4>Nombre Apellido</h4>
+      <p><a href="mailto:usuario@fiuna.edu.py">usuario@fiuna.edu.py</a></p>
+      <p><a href="https://github.com/usuario">github.com/usuario</a></p>
+    </article>
+    <article class="tarjeta">
+      <h4>Nombre Apellido</h4>
+      <p><a href="mailto:usuario@fiuna.edu.py">usuario@fiuna.edu.py</a></p>
+      <p><a href="https://github.com/usuario">github.com/usuario</a></p>
+    </article>
+  </div>
+</section>
+
+<!-- =========================================================
+     2. DEFINICIÓN DEL PROBLEMA Y JUSTIFICACIÓN
+     ========================================================= -->
+<section id="problema" aria-labelledby="h-problema">
+  <h2 id="h-problema"><span class="num">2</span>Definición del problema y justificación</h2>
+
+  <h3>Contexto</h3>
+  <div class="texto">
+    <p>Los motores eléctricos y las máquinas rotativas que accionan (bombas, compresores, ventiladores, cintas) son el corazón de la industria. Sus fallas más frecuentes son mecánicas: el <strong>desgaste de rodamientos</strong>, la <strong>desalineación del eje</strong> y el <strong>desbalance del rotor</strong>. Detectarlas cuando todavía son incipientes permite pasar del mantenimiento correctivo (reparar cuando se rompe) al <strong>predictivo</strong> (intervenir antes). Así se evitan paradas no planificadas, daños en cadena y riesgos para las personas.</p>
+    <p>Cada falla deja una huella en la <strong>vibración</strong> y en el <strong>sonido</strong> de la máquina. El problema es que esa huella es pequeña cuando la falla empieza, cambia con la carga y se mezcla con el ruido del resto del equipo.</p>
+  </div>
+
+  <h3>¿Por qué aprendizaje automático?</h3>
+  <div class="rejilla-2">
+    <div class="caja">
+      <h4>Métodos tradicionales</h4>
+      <ul>
+        <li><strong>Umbrales de severidad global</strong> (zonas de la norma ISO 10816/20816 sobre el valor RMS): dicen <em>cuánto</em> vibra la máquina, pero no <em>qué</em> le pasa.</li>
+        <li><strong>Reglas espectrales manuales</strong> (1× la frecuencia de giro para desbalance, 2× para desalineación, BPFI y BPFO para rodamientos): necesitan un especialista, la velocidad exacta y un espectro limpio. Se degradan con la carga, el ruido y las fallas incipientes.</li>
+      </ul>
+    </div>
+    <div class="caja">
+      <h4>Aprendizaje automático</h4>
+      <ul>
+        <li>Combina decenas de indicadores de varios sensores y aprende fronteras de decisión no lineales entre fallas.</li>
+        <li>Entrega una <strong>probabilidad</strong>, lo que permite fijar el umbral de decisión para priorizar no dejar pasar ninguna falla.</li>
+        <li>Con la importancia de características y SHAP se puede <strong>verificar que lo aprendido coincide con la física</strong> de cada falla: no queda como una caja negra.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="nota texto">Se eligen <strong>ensambles de árboles</strong> (Random Forest y Gradient Boosting) porque los datos de entrada son una tabla de características. En ese escenario los ensambles son robustos a las escalas y a los valores extremos, capturan interacciones entre variables y ofrecen medidas de importancia interpretables.</p>
+
+  <h3>Tipo de tarea</h3>
+  <ul class="texto">
+    <li><strong>Clasificación supervisada multiclase</strong>, 5 clases: normal, falla de pista interna (BPFI), falla de pista externa (BPFO), desalineación y desbalance.</li>
+    <li><strong>Vista binaria de detección</strong> (normal frente a falla), evaluada con un F-score ponderado hacia la sensibilidad (sección 4).</li>
+    <li>La severidad de cada falla se estudia aparte, como análisis secundario.</li>
+  </ul>
+
+  <h3>Objetivos</h3>
+  <h4>Objetivo general</h4>
+  <p class="texto">Desarrollar y evaluar un método de detección y clasificación de fallas en una máquina rotativa a partir de señales de vibración y acústica con modelos de ensamble. El método debe identificar qué características y sensores son determinantes para cada tipo de falla y cómo se relacionan las fallas con la temperatura, la corriente y la carga.</p>
+  <h4>Objetivos específicos</h4>
+  <ol class="texto">
+    <li>Segmentar las señales en ventanas y extraer características temporales, espectrales y de distribución de magnitudes en dB.</li>
+    <li>Construir conjuntos de características acumulativos (C1 a C3) y medir el aporte de cada familia.</li>
+    <li>Entrenar y optimizar Random Forest y Gradient Boosting con Optuna, con una validación cruzada agrupada que evite la fuga de datos.</li>
+    <li>Comparar vibración, acústica y su fusión en igualdad de condiciones (experimento B).</li>
+    <li>Evaluar el manejo del desbalance de clases: pesos de clase frente a SMOTE.</li>
+    <li>Cuantificar la importancia de características y sensores para cada tipo de falla.</li>
+    <li>Contrastar las fallas detectadas con la temperatura, la corriente del motor y la carga.</li>
+  </ol>
+</section>
+
+<!-- =========================================================
+     3. CONJUNTO DE DATOS Y ANÁLISIS EXPLORATORIO
+     ========================================================= -->
+<section id="datos" aria-labelledby="h-datos">
+  <h2 id="h-datos"><span class="num">3</span>Conjunto de datos y análisis exploratorio (EDA)</h2>
+
+  <h3>3.1 Fuente de los datos</h3>
+  <div class="texto">
+    <p>Se usa el conjunto público <em>Vibration, Acoustic, Temperature, and Motor Current Dataset of Rotating Machine Under Varying Load Conditions for Fault Diagnosis</em> (versión 5, licencia CC BY 4.0). Lo publicó el laboratorio del Center for Noise and Vibration Control Plus del KAIST (Corea del Sur) y está descrito en Jung et al., <em>Data in Brief</em> 48 (2023) 109049. El artículo incluye una segunda parte con velocidad variable, que <strong>no se usa</strong> en este trabajo: solo se trabaja con <strong>carga variable</strong>.</p>
+    <p><strong>Banco de ensayo:</strong> motor de inducción trifásico de 3 HP, medidor de par, caja multiplicadora (×2,07), dos alojamientos de rodamiento (A y B), rotor con discos y freno de histéresis. El eje gira a <strong>3010 rpm</strong> (unos 50,17 Hz) con <strong>0, 2 y 4 Nm</strong> de carga. Los rodamientos son NSK 6205.</p>
+  </div>
+
+  <div class="tabla-scroll">
+    <table>
+      <caption>Sensores y variables</caption>
+      <thead><tr><th>Señal</th><th>Sensor</th><th>Canales</th><th class="num">Muestreo</th><th>Unidad</th><th>Formato</th><th>Uso en el proyecto</th></tr></thead>
+      <tbody>
+        <tr><td>Vibración</td><td>4 acelerómetros ICP (PCB352C34)</td><td>x e y en los alojamientos A y B</td><td class="num">25,6 kHz</td><td>g</td><td><code>.mat</code></td><td>Entrenamiento (A y B)</td></tr>
+        <tr><td>Acústica</td><td>Micrófono (PCB378B02) junto al alojamiento A</td><td>1</td><td class="num">51,2 kHz</td><td>Pa</td><td><code>.mat</code></td><td>Entrenamiento (B)</td></tr>
+        <tr><td>Temperatura</td><td>2 termocuplas tipo K</td><td>Alojamientos A y B</td><td class="num">25,6 kHz</td><td>°C</td><td><code>.tdms</code></td><td>Contraste</td></tr>
+        <tr><td>Corriente</td><td>3 transformadores de corriente (Hioki CT6700)</td><td>Fases U, V y W</td><td class="num">25,6 kHz</td><td>A</td><td><code>.tdms</code></td><td>Contraste</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tabla-scroll">
+    <table>
+      <caption>Condiciones de la máquina (carga variable)</caption>
+      <thead><tr><th>Clase</th><th>Ubicación</th><th>Severidades</th><th class="num">Duración por archivo</th><th>Cargas</th><th class="num">Archivos de vibración</th><th>Acústica</th></tr></thead>
+      <tbody>
+        <tr><td>Normal</td><td>—</td><td>—</td><td class="num">120 s</td><td>0, 2, 4 Nm</td><td class="num">3</td><td>Sí (0 Nm, 60 s)</td></tr>
+        <tr><td>Pista interna (BPFI)</td><td>Rodamiento A</td><td>0,3 · 1,0 · 3,0 mm</td><td class="num">60 s</td><td>0, 2, 4 Nm</td><td class="num">9</td><td>0,3 y 1,0 mm (0 Nm)</td></tr>
+        <tr><td>Pista externa (BPFO)</td><td>Rodamiento A</td><td>0,3 · 1,0 · 3,0 mm</td><td class="num">60 s</td><td>0, 2, 4 Nm</td><td class="num">9</td><td>0,3 y 1,0 mm (0 Nm)</td></tr>
+        <tr><td>Desalineación</td><td>Alojamiento A</td><td>0,1 · 0,3 · 0,5 mm</td><td class="num">60 s</td><td>0, 2, 4 Nm</td><td class="num">9</td><td>No</td></tr>
+        <tr><td>Desbalance</td><td>Disco 4</td><td>583 · 1169 · 1751 · 2239 · 3318 mg</td><td class="num">60 s</td><td>0, 2, 4 Nm</td><td class="num">15</td><td>No</td></tr>
+        <tr><th scope="row">Total</th><td></td><td>15 condiciones</td><td class="num">2880 s</td><td></td><td class="num">45</td><td>5 archivos</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="texto"><strong>Instancias y variables.</strong> Las 45 grabaciones de vibración se cortan en <strong>ventanas de 1 s</strong>, y cada ventana es una instancia: unas <strong>2880</strong> en el experimento A y <strong>300</strong> en el experimento B. Las variables de entrada son <strong>numéricas continuas</strong>, calculadas a partir de series temporales: estadísticos, amplitudes espectrales y percentiles en dB (sección 4). La variable objetivo es <strong>categórica</strong> (5 clases). La carga y la severidad son metadatos: sirven para agrupar y analizar, pero <strong>no entran al modelo</strong>.</p>
+
+  <h3>3.2 Distribución de clases</h3>
+  <figure>
+    <div class="grafico" data-datos="datos-clases" data-unidad="ventanas" data-titulo="Ventanas de 1 s por clase en el experimento A"></div>
+    <script type="application/json" id="datos-clases">
+      [
+        {"etiqueta": "Normal",        "valor": 360, "detalle": "3 cargas × 120 s"},
+        {"etiqueta": "BPFI",          "valor": 540, "detalle": "3 severidades × 3 cargas × 60 s"},
+        {"etiqueta": "BPFO",          "valor": 540, "detalle": "3 severidades × 3 cargas × 60 s"},
+        {"etiqueta": "Desalineación", "valor": 540, "detalle": "3 severidades × 3 cargas × 60 s"},
+        {"etiqueta": "Desbalance",    "valor": 900, "detalle": "5 severidades × 3 cargas × 60 s"}
+      ]
+    </script>
+    <figcaption><strong>Figura 1.</strong> Ventanas de 1 s por clase en el experimento A (calculadas a partir de las duraciones del dataset). El desbalance aporta 2,5 veces más ventanas que la clase normal: por eso la exactitud sola no alcanza y se usan F1 macro y pesos de clase (sección 4).</figcaption>
+  </figure>
+
+  <h3>3.3 Frecuencias características de falla</h3>
+  <p class="texto">La geometría del rodamiento NSK 6205 (diámetro de bola <var>d</var> = 7,90 mm, diámetro primitivo <var>D</var> = 38,5 mm, <var>N</var> = 9 bolas, ángulo de contacto θ = 0°) y la frecuencia de giro <var>f</var><sub>r</sub> = 3010/60 = 50,17 Hz determinan dónde aparece cada falla en el espectro. Las características espectrales del modelo se construyen alrededor de estas frecuencias.</p>
+  <div class="tabla-scroll">
+    <table>
+      <caption>Frecuencias teóricas a 3010 rpm</caption>
+      <thead><tr><th>Frecuencia</th><th>Expresión</th><th class="num">Valor</th><th>Falla asociada</th></tr></thead>
+      <tbody>
+        <tr><td>Giro del eje, 1× · 2× · 3×</td><td><var>f</var><sub>r</sub> = rpm/60</td><td class="num">50,17 · 100,3 · 150,5 Hz</td><td>Desbalance (1×), desalineación (2× y 3×)</td></tr>
+        <tr><td>Jaula (FTF)</td><td>(<var>f</var><sub>r</sub>/2)(1 − (<var>d</var>/<var>D</var>) cos θ)</td><td class="num">19,94 Hz</td><td>Defecto de jaula</td></tr>
+        <tr><td>Pista interna (BPFI)</td><td>(<var>N</var><var>f</var><sub>r</sub>/2)(1 + (<var>d</var>/<var>D</var>) cos θ)</td><td class="num">272,07 Hz</td><td>Pista interna</td></tr>
+        <tr><td>Pista externa (BPFO)</td><td>(<var>N</var><var>f</var><sub>r</sub>/2)(1 − (<var>d</var>/<var>D</var>) cos θ)</td><td class="num">179,43 Hz</td><td>Pista externa</td></tr>
+        <tr><td>Giro de bola (BSF) · 2×BSF</td><td>(<var>D</var><var>f</var><sub>r</sub>/2<var>d</var>)(1 − (<var>d</var>/<var>D</var>)² cos² θ)</td><td class="num">117,09 · 234,19 Hz</td><td>Defecto de bola</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="nota texto"><strong>Observación.</strong> El artículo informa BSF = 234,19 Hz, pero la expresión de su Tabla 1 da 117,09 Hz. El valor informado corresponde a <strong>2×BSF</strong>: un defecto en una bola golpea ambas pistas en cada vuelta de la bola. Se usan las dos frecuencias. Además, la velocidad real puede bajar levemente con la carga, así que <var>f</var><sub>r</sub> se estima en cada ventana a partir del pico del espectro, en lugar de fijarla en 50,17 Hz.</p>
+
+  <h3>3.4 Preprocesamiento</h3>
+  <ol class="flujo" aria-label="Etapas del preprocesamiento">
+    <li><span class="herr">MATLAB</span><strong>Lectura</strong><span>Los <code>.mat</code> se leen de a uno, con la carga, la clase y la severidad tomadas del nombre del archivo.</span></li>
+    <li><span class="herr">MATLAB</span><strong>Control de calidad</strong><span>Huecos en el <code>Time Stamp</code>, valores NaN, saturación y picos de artefacto.</span></li>
+    <li><span class="herr">MATLAB</span><strong>Ventanas</strong><span>Ventanas de 1 s agrupadas en bloques de 10 s. La normal se recorta a los 60 s simultáneos con la acústica (exp. B).</span></li>
+    <li><span class="herr">MATLAB</span><strong>Características</strong><span>Estadísticos, <code>pwelch</code>, envolvente con <code>hilbert</code> y percentiles en dB.</span></li>
+    <li><span class="herr">Python</span><strong>Tabla final</strong><span>Un CSV con una fila por ventana, que se lee en los cuadernos de scikit-learn.</span></li>
+  </ol>
+
+  <div class="rejilla-2">
+    <div class="caja">
+      <h4>Valores faltantes</h4>
+      <p>Se revisan los huecos en el <code>Time Stamp</code> (el intervalo entre muestras debe ser 1/<var>f</var><sub>s</sub>) y los valores NaN. <strong>No se imputa la señal</strong>: inventar muestras en una vibración crea frecuencias falsas. Una ventana con huecos se descarta y se registra cuántas fueron. <!-- EDITAR: informar el resultado, p. ej. "0 ventanas descartadas" --></p>
+    </div>
+    <div class="caja">
+      <h4>Valores atípicos</h4>
+      <p>En vibración, los picos <strong>son la señal</strong>: los impactos de un defecto de rodamiento elevan la curtosis y el factor de cresta, así que no se recortan. Se tratan como artefacto solo la saturación del sensor y los picos aislados que aparecen en todos los canales a la vez. Esos se marcan y se excluyen. En la tabla de características, los modelos de árboles son robustos a valores extremos.</p>
+    </div>
+    <div class="caja">
+      <h4>Codificación de variables</h4>
+      <p>Todas las variables de entrada son numéricas, así que no hace falta <code>OneHotEncoder</code>. La clase objetivo se codifica con <code>LabelEncoder</code>. La carga y la severidad quedan como metadatos (grupos y análisis), no como entradas. Así el modelo no puede "conocer" la carga, y la prueba de generalización entre cargas es honesta.</p>
+    </div>
+    <div class="caja">
+      <h4>Escalado</h4>
+      <p>Random Forest y Gradient Boosting no necesitan escalado (dividen por umbrales). El modelo de referencia (regresión logística) usa <code>StandardScaler</code>. Siempre va <strong>dentro del <code>Pipeline</code></strong>, para que se ajuste solo con los datos de entrenamiento de cada pliegue. Si la exploración muestra colas pesadas, se prueba <code>RobustScaler</code>.</p>
+    </div>
+  </div>
+
+  <h3>3.5 Visualizaciones clave del EDA</h3>
+  <p class="texto">Las figuras se generan con <code>TP_4/matlab/figuras_eda.m</code> o con <code>TP_4/notebooks/01_eda.ipynb</code> y se guardan en <code>TP_4/docs/assets/img/</code>. Mientras falte una, la página muestra un recuadro con el nombre esperado.</p>
+
+  <figure>
+    <img src="assets/img/eda_senales_tiempo.png" alt="Señal de vibración en el tiempo para cada clase" data-origen="notebooks/01_eda.ipynb (o matlab/figuras_eda.m)" loading="lazy">
+    <figcaption><strong>Figura 2.</strong> Aceleración (canal x del alojamiento A) durante 0,2 s para cada clase a 0 Nm.</figcaption>
+    <!-- EDITAR: completar el análisis cuando esté la figura -->
+    <dl class="analisis">
+      <dt>Qué se observa</dt><dd>[Completar: amplitud y forma de cada clase; impactos periódicos en BPFI y BPFO.]</dd>
+      <dt>Qué implica para el modelo</dt><dd>[Completar: qué estadísticos del dominio del tiempo deberían separar las clases.]</dd>
+    </dl>
+  </figure>
+
+  <figure>
+    <img src="assets/img/eda_espectros.png" alt="Espectros de vibración por clase con las frecuencias de falla marcadas" data-origen="notebooks/01_eda.ipynb (o matlab/figuras_eda.m)" loading="lazy">
+    <figcaption><strong>Figura 3.</strong> Espectro (Welch) y espectro de envolvente por clase, con 1×, 2×, BPFO y BPFI marcados con líneas verticales.</figcaption>
+    <dl class="analisis">
+      <dt>Qué se observa</dt><dd>[Completar: ¿aparece el pico esperado para cada falla? ¿cambia con la severidad?]</dd>
+      <dt>Qué implica para el modelo</dt><dd>[Completar: justifica las características de bandas alrededor de las frecuencias teóricas.]</dd>
+    </dl>
+  </figure>
+
+  <figure>
+    <img src="assets/img/eda_espectrograma.png" alt="Espectrograma de vibración y de acústica para una falla de rodamiento" data-origen="notebooks/01_eda.ipynb (o matlab/figuras_eda.m)" loading="lazy">
+    <figcaption><strong>Figura 4.</strong> Espectrograma de la vibración y de la acústica para la misma condición (BPFO 1,0 mm, 0 Nm).</figcaption>
+    <dl class="analisis">
+      <dt>Qué se observa</dt><dd>[Completar: estabilidad en el tiempo; bandas presentes en un sensor y no en el otro.]</dd>
+      <dt>Qué implica para el modelo</dt><dd>[Completar: si la acústica aporta información distinta de la vibración (experimento B).]</dd>
+    </dl>
+  </figure>
+
+  <figure>
+    <img src="assets/img/eda_correlacion.png" alt="Matriz de correlación entre características" data-origen="notebooks/01_eda.ipynb" loading="lazy">
+    <figcaption><strong>Figura 5.</strong> Correlación de Spearman entre características (agrupadas por familia y canal).</figcaption>
+    <dl class="analisis">
+      <dt>Qué se observa</dt><dd>[Completar: bloques de características redundantes.]</dd>
+      <dt>Qué implica para el modelo</dt><dd>[Completar: motiva la importancia por permutación agrupada (sección 4.9).]</dd>
+    </dl>
+  </figure>
+
+  <h3>3.6 Parámetros complementarios: temperatura, corriente y carga</h3>
+  <p class="texto">Estas señales <strong>no entran al entrenamiento</strong>. Se usan para contrastar los resultados: ¿cada falla detectada en la vibración deja rastro en la temperatura o en la corriente del motor? ¿Cómo cambia su firma con la carga?</p>
+  <div class="rejilla-3">
+    <div class="caja">
+      <h4>Corriente</h4>
+      <p>RMS por fase, desequilibrio entre fases y bandas laterales alrededor de la frecuencia de alimentación (análisis de firma de corriente, MCSA). El motor gira a unos 24,2 Hz (3010 rpm divididas por la relación 2,07 de la caja), así que la frecuencia de alimentación <strong>se mide en el espectro de corriente</strong> en lugar de suponerla.</p>
+    </div>
+    <div class="caja">
+      <h4>Temperatura</h4>
+      <p>Media, pendiente (°C/min) y diferencia entre los alojamientos A y B. La temperatura sube durante todo el ensayo, así que puede reflejar el <strong>orden de las grabaciones</strong> en lugar de la falla. Por eso se compara la pendiente y no el valor absoluto.</p>
+    </div>
+    <div class="caja">
+      <h4>Carga</h4>
+      <p>Evolución de las características clave con 0, 2 y 4 Nm, para cada falla. Así se ve si la firma de la falla se mantiene, crece o queda oculta con más carga.</p>
+    </div>
+  </div>
+
+  <figure>
+    <img src="assets/img/comp_huella.png" alt="Mapa de calor: fallas en filas y características estandarizadas en columnas" data-origen="notebooks/04_parametros_complementarios.ipynb" loading="lazy">
+    <figcaption><strong>Figura 6.</strong> "Huella" de cada falla: valor medio estandarizado de las características de vibración, temperatura y corriente por clase.</figcaption>
+    <dl class="analisis">
+      <dt>Qué se observa</dt><dd>[Completar.]</dd>
+      <dt>Qué implica</dt><dd>[Completar: qué parámetros acompañan a cada falla; resultado de Kruskal–Wallis por parámetro.]</dd>
+    </dl>
+  </figure>
+</section>
+
+<!-- =========================================================
+     4. METODOLOGÍA Y MODELADO
+     ========================================================= -->
+<section id="metodologia" aria-labelledby="h-metodologia">
+  <h2 id="h-metodologia"><span class="num">4</span>Metodología y modelado</h2>
+
+  <h3>4.1 Flujo general</h3>
+  <ol class="flujo" aria-label="Flujo del proyecto">
+    <li><span class="herr">MATLAB</span><strong>Señales a características</strong><span>Ventanas, espectros y la tabla de características en CSV.</span></li>
+    <li><span class="herr">Python</span><strong>Partición sin fuga</strong><span>Bloques de 10 s, pliegues agrupados y prueba temporal reservada.</span></li>
+    <li><span class="herr">Optuna</span><strong>Optimización</strong><span>Hiperparámetros de cada modelo y conjunto de características.</span></li>
+    <li><span class="herr">scikit-learn</span><strong>Evaluación</strong><span>Métricas sobre la prueba reservada y entre cargas.</span></li>
+    <li><span class="herr">SHAP</span><strong>Interpretación</strong><span>Importancia por familia, sensor y clase, y contraste con temperatura y corriente.</span></li>
+  </ol>
+
+  <h3>4.2 Experimentos</h3>
+  <div class="tabla-scroll">
+    <table>
+      <caption>Experimentos fijos</caption>
+      <thead><tr><th>Experimento</th><th>Datos</th><th>Entradas</th><th>Clases</th><th class="num">Ventanas</th><th>Pregunta</th></tr></thead>
+      <tbody>
+        <tr><td><strong>A · Vibración</strong></td><td>45 archivos, 0, 2 y 4 Nm</td><td>4 canales de vibración</td><td>5 tipos de falla</td><td class="num">≈ 2880</td><td>¿Se detectan y distinguen todas las fallas? ¿Qué características y qué alojamiento pesan en cada una?</td></tr>
+        <tr><td><strong>B · Vibración y acústica</strong></td><td>0 Nm, 5 condiciones, 60 s simultáneos</td><td>Vibración sola, acústica sola, las dos juntas</td><td>Normal, BPFI 0,3/1,0, BPFO 0,3/1,0</td><td class="num">≈ 300</td><td>En las mismas condiciones, ¿qué sensor aporta más y si combinarlos mejora la detección?</td></tr>
+        <tr><td>Contraste</td><td>45 archivos <code>.tdms</code></td><td>Temperatura, corriente y carga</td><td>—</td><td class="num">—</td><td>¿Cómo se asocia cada falla con los demás parámetros? (sección 3.6)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="nota texto">La acústica solo se registró sin carga y para normal, BPFI y BPFO (0,3 y 1,0 mm). Por eso la fusión de sensores se estudia en un experimento propio (B), en lugar de mezclarla con el A.</p>
+
+  <h3>4.3 Características (conjuntos acumulativos)</h3>
+  <p class="texto">Se calculan para cada canal (x e y en los alojamientos A y B, más el micrófono en el experimento B). Siguiendo el enfoque de comparar combinaciones de características (Orzusa Torres et al., 2024), se arman tres conjuntos que se van sumando:</p>
+  <div class="tabla-scroll">
+    <table>
+      <caption>Familias de características</caption>
+      <thead><tr><th>Conjunto</th><th>Familia</th><th>Características</th><th>Relación física</th></tr></thead>
+      <tbody>
+        <tr><td><strong>C1</strong></td><td>Dominio del tiempo</td><td>RMS, pico, pico a pico, factor de cresta, curtosis, asimetría, factores de forma e impulso</td><td>Energía global; la curtosis y el factor de cresta reaccionan a los impactos de los rodamientos</td></tr>
+        <tr><td><strong>C2</strong> = C1 +</td><td>Espectro físico</td><td>Amplitud en 1×, 2× y 3× <var>f</var><sub>r</sub>; energía en BPFI, BPFO, BSF y FTF (y armónicos) sobre el espectro de envolvente; centroide y entropía espectral</td><td>1× = desbalance; 2× y 3× = desalineación; frecuencias del rodamiento = defectos de pista</td></tr>
+        <tr><td><strong>C3</strong> = C2 +</td><td>Distribución en dB</td><td>Percentiles p10, p50 y p90 y rango intercuartil del espectro en dB, por bandas</td><td>Forma general del espectro: el piso de ruido sube con el daño</td></tr>
+        <tr><td>Cruzadas</td><td>Entre canales</td><td>Cociente de energía entre A y B; coherencia y desfase entre A y B en 1×</td><td>La desalineación cambia la relación entre los dos alojamientos</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>4.4 Modelos evaluados</h3>
+  <div class="rejilla-3">
+    <div class="caja">
+      <h4>Regresión logística <span class="estado estado--neutro">referencia</span></h4>
+      <p>Modelo lineal con escalado previo. Sirve de línea base para medir cuánto aportan los ensambles.</p>
+    </div>
+    <div class="caja">
+      <h4>Random Forest</h4>
+      <p><em>Bagging</em> de árboles de decisión: cada árbol se entrena con una muestra con reemplazo y un subconjunto aleatorio de características, y el bosque vota. Reduce la <strong>varianza</strong>. Implementación: <code>RandomForestClassifier</code>.</p>
+    </div>
+    <div class="caja">
+      <h4>Gradient Boosting</h4>
+      <p><em>Boosting</em>: árboles poco profundos que se agregan en secuencia, y cada uno corrige el error de los anteriores siguiendo el gradiente de la pérdida. Reduce el <strong>sesgo</strong>. Implementación: <code>HistGradientBoostingClassifier</code>.</p>
+    </div>
+  </div>
+
+  <h3>4.5 Validación cruzada sin fuga de datos</h3>
+  <div class="texto">
+    <p>Dos ventanas consecutivas de una misma grabación son casi idénticas. Si una cae en entrenamiento y la vecina en prueba, el modelo "reconoce" la grabación en lugar de aprender la falla, y las métricas salen infladas. Para evitarlo se usan tres niveles:</p>
+    <ol>
+      <li><strong>Bloques de 10 s como grupo.</strong> Cada grabación se divide en bloques de 10 s (6 en las de 60 s y 12 en la normal de 120 s). La validación cruzada usa <code>StratifiedGroupKFold</code> (5 pliegues) con el bloque como grupo: todas las ventanas de un bloque quedan del mismo lado.</li>
+      <li><strong>Prueba temporal reservada.</strong> El último bloque de cada grabación (los dos últimos en la normal), cerca del 17 % de los datos, se aparta antes de empezar. Se descarta su primera ventana como margen y se usa <strong>una sola vez</strong>, al final.</li>
+      <li><strong>Generalización entre cargas</strong> (solo en el experimento A). Se entrena con dos cargas y se prueba con la tercera, rotando las tres combinaciones.</li>
+    </ol>
+    <p>El escalado, el remuestreo y cualquier selección de características van dentro de un <code>Pipeline</code>, así se ajustan solo con el pliegue de entrenamiento.</p>
+  </div>
+
+  <h3>4.6 Optimización de hiperparámetros: Optuna</h3>
+  <p class="texto">Optuna hace una búsqueda bayesiana (muestreador TPE con semilla fija). En cada prueba, la función objetivo devuelve el F1 macro medio de la validación cruzada agrupada, y un <code>MedianPruner</code> corta las configuraciones malas antes de terminar todos los pliegues. Se hacen <!-- EDITAR: número real -->100 pruebas por modelo y conjunto de características.</p>
+  <div class="tabla-scroll">
+    <table>
+      <caption>Espacios de búsqueda</caption>
+      <thead><tr><th>Modelo</th><th>Hiperparámetro</th><th>Rango</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="5">Random Forest</td><td><code>n_estimators</code></td><td>200 – 800</td></tr>
+        <tr><td><code>max_depth</code></td><td>5 – 30 o sin límite</td></tr>
+        <tr><td><code>min_samples_leaf</code></td><td>1 – 10</td></tr>
+        <tr><td><code>max_features</code></td><td><code>sqrt</code>, <code>log2</code> o 0,3 – 0,8</td></tr>
+        <tr><td><code>class_weight</code></td><td><code>balanced</code>, <code>balanced_subsample</code></td></tr>
+        <tr><td rowspan="5">HistGradientBoosting</td><td><code>learning_rate</code></td><td>0,01 – 0,3 (logarítmico)</td></tr>
+        <tr><td><code>max_iter</code></td><td>100 – 1000 (con parada temprana)</td></tr>
+        <tr><td><code>max_leaf_nodes</code></td><td>15 – 63</td></tr>
+        <tr><td><code>min_samples_leaf</code></td><td>10 – 100</td></tr>
+        <tr><td><code>l2_regularization</code></td><td>10⁻⁴ – 10 (logarítmico)</td></tr>
+        <tr><td>Regresión logística</td><td><code>C</code></td><td>10⁻³ – 10² (logarítmico)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>4.7 Desbalance de clases</h3>
+  <div class="rejilla-2">
+    <div class="caja">
+      <h4>Enfoque principal: pesos de clase</h4>
+      <p>Con <code>class_weight="balanced"</code>, cada error en una clase poco representada pesa más en el entrenamiento. No crea datos nuevos y no cambia la distribución de prueba.</p>
+    </div>
+    <div class="caja">
+      <h4>Comparación aparte: SMOTE</h4>
+      <p>SMOTE genera ventanas sintéticas interpolando entre vecinos de la clase minoritaria. Se aplica con <code>imblearn.pipeline.Pipeline</code>, <strong>solo dentro del pliegue de entrenamiento</strong>. Se presenta por separado porque las ventanas vecinas están muy correlacionadas: hay que verificar que la mejora aparezca en la prueba reservada y no solo en la validación.</p>
+    </div>
+  </div>
+
+  <h3>4.8 Métricas de evaluación</h3>
+  <div class="tabla-scroll">
+    <table>
+      <caption>Métricas y justificación</caption>
+      <thead><tr><th>Métrica</th><th>Por qué</th></tr></thead>
+      <tbody>
+        <tr><td><strong>F1 macro</strong> (principal)</td><td>Promedia el F1 de cada clase con el mismo peso: una clase grande (desbalance) no puede ocultar a una mal clasificada. También es el objetivo de Optuna.</td></tr>
+        <tr><td><strong>F<sub>β=2</sub> de detección</strong></td><td>En la vista binaria (falla = positivo) pesa la <strong>sensibilidad (recall)</strong> el doble que la precisión: una falla clasificada como normal (falso negativo) es el error más caro, y una falsa alarma se tolera más.</td></tr>
+        <tr><td>Exactitud balanceada</td><td>Promedio del recall por clase; no la infla la clase más numerosa.</td></tr>
+        <tr><td>Recall por clase y matriz de confusión normalizada</td><td>Muestra qué fallas se confunden entre sí (por ejemplo, BPFI de 0,3 mm con normal).</td></tr>
+        <tr><td>ROC-AUC macro (uno contra el resto)</td><td>Calidad de las probabilidades, independiente del umbral.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="caja">
+    <div class="formula" role="math" aria-label="F beta igual a uno más beta al cuadrado, por precisión por recall, sobre beta al cuadrado por precisión más recall">
+      F<sub><var>β</var></sub> = (1 + <var>β</var>²) · <var>P</var> · <var>R</var> / (<var>β</var>² · <var>P</var> + <var>R</var>), &nbsp; con <var>β</var> = 2
+    </div>
+    <p><strong>Umbral orientado a la detección.</strong> El modelo multiclase entrega <var>p</var>(normal). La ventana se declara normal solo si <var>p</var>(normal) ≥ τ. El umbral τ se elige en la validación cruzada maximizando F<sub>2</sub>, nunca con la prueba reservada. Subir τ sacrifica precisión (más falsas alarmas) para no perder fallas.</p>
+  </div>
+
+  <h3>4.9 Importancia de características y sensores</h3>
+  <ul class="texto">
+    <li><strong>Importancia por permutación agrupada</strong>, sobre la prueba reservada: se desordena una familia completa (por ejemplo, "todo el alojamiento B" o "todo C3") y se mide cuánto cae el F1 macro. Agrupar evita subestimar características correlacionadas.</li>
+    <li><strong>SHAP</strong> (TreeSHAP), por clase: qué características empujan la predicción hacia cada tipo de falla, para comprobar que coinciden con la física de la sección 3.3.</li>
+  </ul>
+
+  <h3>4.10 Reproducibilidad</h3>
+  <!-- EDITAR: rutas reales del repositorio -->
+  <ul class="texto">
+    <li>Extracción de características: <a href="https://github.com/ibald92/ML1-2026-2_juanibarra/tree/main/TP_4/matlab"><code>TP_4/matlab/</code></a>. La tabla resultante va en <code>TP_4/datos/caracteristicas_ventanas.csv</code>, así los cuadernos se pueden correr sin MATLAB.</li>
+    <li>Cuadernos: <a href="https://github.com/ibald92/ML1-2026-2_juanibarra/tree/main/TP_4/notebooks"><code>TP_4/notebooks/</code></a> (EDA, experimentos A y B, SMOTE, parámetros complementarios).</li>
+    <li>Datos crudos: no van al repositorio. Se descargan desde <a href="https://doi.org/10.17632/ztmf3m7h5x.5">Mendeley Data</a>.</li>
+    <li>Entorno: Python 3.12 con scikit-learn, Optuna, imbalanced-learn, SHAP, npTDMS y SciPy; MATLAB con Signal Processing Toolbox. Las versiones de los paquetes están en <code>TP_4/requirements.txt</code>.</li>
+  </ul>
+</section>
+
+<!-- =========================================================
+     5. RESULTADOS (examen final) — quitar "hidden" para mostrar
+     ========================================================= -->
+<section id="resultados" aria-labelledby="h-resultados" hidden>
+  <h2 id="h-resultados"><span class="num">5</span>Resultados, comparativa y discusión</h2>
+  <div class="tabla-scroll">
+    <table>
+      <caption>Experimento A: prueba reservada</caption>
+      <thead><tr><th>Modelo</th><th>Conjunto</th><th class="num">F1 macro</th><th class="num">F<sub>2</sub> detección</th><th class="num">Exactitud balanceada</th><th class="num">ROC-AUC</th></tr></thead>
+      <tbody>
+        <tr><td>Regresión logística</td><td>C3</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+        <tr><td>Random Forest</td><td>C3</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+        <tr><td>HistGradientBoosting</td><td>C3</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <figure>
+    <img data-src="assets/img/res_matriz_confusion.png" alt="Matriz de confusión normalizada del mejor modelo" data-origen="notebooks/02_experimento_A.ipynb" loading="lazy">
+    <figcaption><strong>Figura 7.</strong> Matriz de confusión normalizada (prueba reservada).</figcaption>
+  </figure>
+  <figure>
+    <img data-src="assets/img/res_curvas_aprendizaje.png" alt="Curvas de aprendizaje" data-origen="notebooks/02_experimento_A.ipynb" loading="lazy">
+    <figcaption><strong>Figura 8.</strong> Curvas de aprendizaje: ¿hay sobreajuste o subajuste?</figcaption>
+  </figure>
+  <p class="texto">[Completar: análisis crítico, el mejor modelo y por qué, experimento B, SMOTE frente a pesos de clase, importancia por falla.]</p>
+</section>
+
+<!-- =========================================================
+     6. CONCLUSIONES (examen final) — quitar "hidden" para mostrar
+     ========================================================= -->
+<section id="conclusiones" aria-labelledby="h-conclusiones" hidden>
+  <h2 id="h-conclusiones"><span class="num">6</span>Conclusiones y trabajo futuro</h2>
+  <h3>Conclusiones</h3>
+  <p class="texto">[Completar.]</p>
+  <h3>Limitaciones</h3>
+  <ul class="texto">
+    <li>Fallas sembradas en un banco de laboratorio: un solo tipo de rodamiento y una velocidad fija.</li>
+    <li>Acústica disponible solo sin carga y para algunas condiciones.</li>
+  </ul>
+  <h3>Trabajo futuro</h3>
+  <ul class="texto">
+    <li>Validar con la parte de velocidad variable del mismo conjunto de datos (680 – 2460 rpm).</li>
+    <li>Diagnóstico solo con la corriente del motor (sin acelerómetro).</li>
+  </ul>
+</section>
+
+<!-- =========================================================
+     REFERENCIAS
+     ========================================================= -->
+<section id="referencias" aria-labelledby="h-referencias">
+  <h2 id="h-referencias">Referencias</h2>
+  <ol class="referencias">
+    <li>W. Jung, S.-H. Kim, S.-H. Yun, J. Bae y Y.-H. Park, “Vibration, acoustic, temperature, and motor current dataset of rotating machine under varying operating conditions for fault diagnosis,” <em>Data in Brief</em>, vol. 48, 109049, 2023. <a href="https://doi.org/10.1016/j.dib.2023.109049">doi:10.1016/j.dib.2023.109049</a></li>
+    <li>W. Jung et al., “Vibration, Acoustic, Temperature, and Motor Current Dataset of Rotating Machine Under Varying Load Conditions for Fault Diagnosis,” Mendeley Data, v5, 2023. <a href="https://doi.org/10.17632/ztmf3m7h5x.5">doi:10.17632/ztmf3m7h5x.5</a></li>
+    <li>E. Orzusa Torres, D. Stalder y C. Mendez, “Predicción de fallas en motores rotativos utilizando modelos de aprendizaje automático y análisis espectral,” presentación en el II Congreso Paraguayo de Informática (Simposio en Matemática Computacional y Aplicaciones Industriales), FIUNA, 2024.</li>
+    <li>R. B. Randall y J. Antoni, “Rolling element bearing diagnostics — A tutorial,” <em>Mechanical Systems and Signal Processing</em>, vol. 25, pp. 485–520, 2011. <a href="https://doi.org/10.1016/j.ymssp.2010.07.017">doi:10.1016/j.ymssp.2010.07.017</a></li>
+    <li>L. Breiman, “Random Forests,” <em>Machine Learning</em>, vol. 45, pp. 5–32, 2001. <a href="https://doi.org/10.1023/A:1010933404324">doi:10.1023/A:1010933404324</a></li>
+    <li>J. H. Friedman, “Greedy function approximation: A gradient boosting machine,” <em>The Annals of Statistics</em>, vol. 29, n.º 5, pp. 1189–1232, 2001. <a href="https://doi.org/10.1214/aos/1013203451">doi:10.1214/aos/1013203451</a></li>
+    <li>T. Akiba, S. Sano, T. Yanase, T. Ohta y M. Koyama, “Optuna: A next-generation hyperparameter optimization framework,” <em>Proc. 25th ACM SIGKDD</em>, 2019. <a href="https://doi.org/10.1145/3292500.3330701">doi:10.1145/3292500.3330701</a></li>
+    <li>N. V. Chawla, K. W. Bowyer, L. O. Hall y W. P. Kegelmeyer, “SMOTE: Synthetic minority over-sampling technique,” <em>Journal of Artificial Intelligence Research</em>, vol. 16, pp. 321–357, 2002. <a href="https://doi.org/10.1613/jair.953">doi:10.1613/jair.953</a></li>
+    <li>S. M. Lundberg y S.-I. Lee, “A unified approach to interpreting model predictions,” <em>Advances in Neural Information Processing Systems 30</em>, 2017. <a href="https://arxiv.org/abs/1705.07874">arXiv:1705.07874</a></li>
+    <li>F. Pedregosa et al., “Scikit-learn: Machine learning in Python,” <em>Journal of Machine Learning Research</em>, vol. 12, pp. 2825–2830, 2011. <a href="https://jmlr.org/papers/v12/pedregosa11a.html">jmlr.org</a></li>
+  </ol>
+</section>
+
+</main>
+
+<footer>
+  <p>Machine Learning 1 (23433) · Ingeniería Electrónica · FIUNA · <span id="anio">2026</span></p>
+  <p>Datos: Jung et al. (KAIST), CC BY 4.0. Sitio publicado con GitHub Pages.</p>
+</footer>
+</body>
+</html>
